@@ -1,0 +1,15 @@
+body {
+    color: #000;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: #f7f7f7;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.app {
+    width: 800px;
+    height: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
