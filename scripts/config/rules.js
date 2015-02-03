@@ -23,7 +23,7 @@ var allRules = {
                 'pattern': /(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/ig,
                 'matchGroup': 0
             },
-            'fetchUrl': 'http://127.0.0.1:7777/links'
+            'fetchUrl': 'http://title-service.azurewebsites.net/links'
         }
     ]
 };
