@@ -3,16 +3,64 @@
 <head>
     <title>Message Parser Test Page</title>
     <link rel="stylesheet" type="text/css" href="styles/mp_tester.css">
-    <script type="text/javascript" src="scripts/mp_tester.js"></script>
-    <script type="text/javascript" src="scripts/mp.js"></script>
 </head>
 <body>
-<div class='app'>
-    <div class='main'>
+<div class='main'>
+    <div class='test-input'>
+        <label>Enter a message to parse:</label>
+        <div>
+            <textarea id='input' rows="20"></textarea>
+        </div>
+        <button id='button' type='button'>Parse</button>
+    </div>
+    <div class='test-result'>
+        <pre id='output'></pre>
     </div>
 </div>
+<script type="text/javascript" src="scripts/utils.js"></script>
+<script type="text/javascript" src="scripts/rule.js"></script>
+<script type="text/javascript" src="scripts/linkrule.js"></script>
+<script type="text/javascript" src="scripts/messageparser.js"></script>
 <script type="text/javascript">
-    // create Message Parser Tester with options
+
+    var elmButton = document.getElementById('button');
+    var elmTextArea = document.getElementById('input');
+    var elmOutput = document.getElementById('output');
+    var rule_mentions = new Rule({
+        'name': 'mentions',
+        'regex': /@(\w+)/ig,
+        'matchGroup': 1
+    });
+    var rule_emoticons = new Rule({
+        'name': 'emoticons',
+        'regex': /\((\w+)\)/ig,
+        'matchGroup': 1
+    });
+    var rule_links = new LinkRule({
+        'name': 'links',
+        'regex': /(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/ig,
+        'matchGroup': 0,
+        'fetchUrl': 'http://127.0.0.1:7777/links'
+    });
+
+    var mp = new MessageParser({
+        'rules': [
+            rule_mentions,
+            rule_emoticons,
+            rule_links
+        ]
+    });
+    elmButton.addEventListener('click', function() {
+        mp.parse(elmTextArea.value).then(function(results) {
+            if (results) {
+                elmOutput.innerHTML = JSON.stringify(results, null, 2);
+            } else {
+                elmOutput.innerHTML = 'There is nothing to parse..';
+            }
+        }, function(error) {
+            elmOutput.innerHTML = error.message;
+        });
+    });
 </script>
 </body>
 </html>
