@@ -3,14 +3,13 @@ var Rule = (function(utils) {
     // Constructor
     var rule = function(options) {
         // validate and set known options
-        if (!utils.isUndefinedOrNull(options.regex)) {
+        if (!utils.isUndefinedOrNull(options.regex) && 
+            !utils.isUndefinedOrNull(options.regex.pattern) && 
+            !utils.isUndefinedOrNull(options.regex.matchGroup)) {
             this.regex = options.regex;
         }
         if (!utils.isUndefinedOrNull(options.name)) {
             this.name = options.name;
-        }
-        if (!utils.isUndefinedOrNull(options.matchGroup)) {
-            this.matchGroup = options.matchGroup;
         }
 
         // cache all options for custom usage by extending rules
@@ -21,10 +20,10 @@ var Rule = (function(utils) {
         var that = this;
         var resultsObj = {};
         var eachResult = [];
-        if (!utils.isEmptyString(message) && that.regex) {
+        if (!utils.isEmptyString(message)) {
             var results = [];
-            while ((eachResult = that.regex.exec(message)) !== null) {
-                results.push(eachResult[that.matchGroup]);
+            while ((eachResult = that.regex.pattern.exec(message)) !== null) {
+                results.push(eachResult[that.regex.matchGroup]);
             }
             resultsObj[that.name] = results;
         }
