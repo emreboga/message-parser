@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Message Parser Test Page</title>
+    <link rel="stylesheet" type="text/css" href="styles/messageparser.css">
+</head>
+<body>
+<div class='main'>
+    <div class='test-input'>
+        <label>Enter a message to parse:</label>
+        <div>
+            <textarea id='input' rows="20"></textarea>
+        </div>
+        <button id='button' type='button'>Parse</button>
+    </div>
+    <div class='test-result'>
+        <label>Results:</label>
+        <pre id='output'></pre>
+    </div>
+</div>
+<script type="text/javascript" src="scripts/utils.js"></script>
+<script type="text/javascript" src="scripts/config/rules.js"></script>
+<script type="text/javascript" src="scripts/rules/rule-base.js"></script>
+<script type="text/javascript" src="scripts/rules/rule-link.js"></script>
+<script type="text/javascript" src="scripts/rules/generator.js"></script>
+<script type="text/javascript" src="scripts/messageparser.js"></script>
+<script type="text/javascript">
+    var elmButton = document.getElementById('button');
+    var elmTextArea = document.getElementById('input');
+    var elmOutput = document.getElementById('output');
+    var mp = new MessageParser(RuleGenerator.generate(allRules));
+    elmButton.addEventListener('click', function() {
+        mp.parse(elmTextArea.value).then(function(results) {
+            if (!results.error) {
+                elmOutput.innerHTML = JSON.stringify(results, null, 2);
+            } else {
+                elmOutput.innerHTML = results.error.message;
+            }
+        });
+    });
+</script>
+</body>
+</html>
