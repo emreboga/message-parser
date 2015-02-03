@@ -31,7 +31,5 @@ body {
 .main .test-input button {
     width: 100%;
     height: 30px;
-}
-
-.main .test-result pre {
+    margin-bottom: 10px;
 }
