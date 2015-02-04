@@ -22,25 +22,69 @@ var Utility = (function() {
         return this.isUndefinedOrNull(array) || array.length === 0;
     };
 
-    // Our internal utility to make Xml Http requests
-    // This function returns a 'promise' to be used by the caller
+    // sets up the prototype chain for subclasses
+    // the usage of extend requires to call it from the context of the parent
+    // NOTE: we cannot use underscore extend here, which only copies the properties not chaining prototypes
+    utils.extend = function(protoProps) {
+        var parent = this;
+        var child;
+        // The constructor function for the new subclass is either defined by the child
+        // or defaulted to simply calling the parent's constructor
+        if (!utils.isUndefinedOrNull(protoProps) && protoProps.hasOwnProperty('constructor')) {
+            child = protoProps.constructor;
+        } else {
+            child = function() {
+                return parent.apply(this, arguments);
+            };
+        }
+        // Set the prototype chain to inherit from parent, without calling parent's constructor function
+        var Surrogate = function() {
+            this.constructor = child;
+        };
+        Surrogate.prototype = parent.prototype;
+        child.prototype = new Surrogate();
+        // Add prototype properties (instance properties) to the subclass
+        if (!utils.isUndefinedOrNull(protoProps)) {
+            for (var property in protoProps) {
+                child.prototype[property] = protoProps[property];
+            }
+        }
+        // Set a convenience property in case the parent's prototype is needed later
+        child.__super__ = parent.prototype;
+        return child;
+    };
+
+    // internal utility to make Xml Http requests
+    // returns a 'promise' to be used by the caller
     utils.makeXHttpRequest = function(url, method, body) {
+        // create promise to be returned to the caller
         var promise = new Promise(function(resolve) {
             var request = new XMLHttpRequest();
             if (typeof request !== 'undefined' && request !== null) {
                 request.onreadystatechange = function() {
+                    // take action only when readystate is 'request finished and response is ready'
                     if (request.readyState === 4) {
                         if (request.status === 200) {
+                            // resolve for html 200 responses
                             resolve(request.response);
                         } else {
+                            // we still resolve for all other cases, but with an error message
                             resolve(utils.logError(null, 'Error status: ' + request.status + ' returned for url: ' + request.url));
                         }
                     }
                 };
+                // set the method and url for the request
                 request.open(method, url);
+                // set the content-type as json
                 request.setRequestHeader('Content-type', 'application/json');
-                request.send(body);
+                // send the request with the body only for POST requests
+                if (method === 'POST' && body) {
+                    request.send(body);
+                } else {
+                    request.send();
+                }
             } else {
+                // in case of any XMLHttpRequest creation errors resolve with the error mesage
                 resolve(utils.logError(null, 'Error creating XMLHttpRequest'));
             }
         });
@@ -48,8 +92,11 @@ var Utility = (function() {
         return promise;
     };
 
+    // returns an error object with the context and message specifiec
     utils.logError = function(context, message) {
         var errorObj = {};
+        // if there is a 'name' property (e.g. for Rule objects)
+        // we use it to wrap the specific error message within
         if (context.name) {
             errorObj[context.name] = {
                 error: {
