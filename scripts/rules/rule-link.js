@@ -1,5 +1,5 @@
 var LinkRule = (function(Rule, utils) {
-    var linkRule = Rule.prototype.extend({
+    var linkRule = Rule.extend({
         // function to be executed after regex parsing of the message
         // results: array returned as the results of regex parsing
         postProcess: function(results) {

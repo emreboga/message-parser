@@ -22,38 +22,6 @@ var Utility = (function() {
         return this.isUndefinedOrNull(array) || array.length === 0;
     };
 
-    // sets up the prototype chain for subclasses
-    // the usage of extend requires to call it from the context of the parent
-    // NOTE: we cannot use underscore extend here, which only copies the properties not chaining prototypes
-    utils.extend = function(protoProps) {
-        var parent = this;
-        var child;
-        // The constructor function for the new subclass is either defined by the child
-        // or defaulted to simply calling the parent's constructor
-        if (!utils.isUndefinedOrNull(protoProps) && protoProps.hasOwnProperty('constructor')) {
-            child = protoProps.constructor;
-        } else {
-            child = function() {
-                return parent.apply(this, arguments);
-            };
-        }
-        // Set the prototype chain to inherit from parent, without calling parent's constructor function
-        var Surrogate = function() {
-            this.constructor = child;
-        };
-        Surrogate.prototype = parent.prototype;
-        child.prototype = new Surrogate();
-        // Add prototype properties (instance properties) to the subclass
-        if (!utils.isUndefinedOrNull(protoProps)) {
-            for (var property in protoProps) {
-                child.prototype[property] = protoProps[property];
-            }
-        }
-        // Set a convenience property in case the parent's prototype is needed later
-        child.__super__ = parent.prototype;
-        return child;
-    };
-
     // internal utility to make Xml Http requests
     // returns a 'promise' to be used by the caller
     utils.makeXHttpRequest = function(url, method, body) {
