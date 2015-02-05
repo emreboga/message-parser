@@ -9,6 +9,15 @@ var RuleLink = (function(RuleBase, utils) {
             var values = results[this.name];
             var fetchUrl = this.options.fetchUrl;
             if (!utils.isEmptyArray(values) && !utils.isUndefinedOrNull(fetchUrl)) {
+                for (var i = 0, l = values.length; i < l; i++) {
+                    // our regex matches urls without protocol too and we need to add them here
+                    var value = values[i];
+                    if (value.toUpperCase().indexOf('HTTP://') < 0 &&
+                        value.toUpperCase().indexOf('HTTPS://') < 0) {
+                        value = 'http://' + value;
+                        values[i] = value;
+                    }
+                }
                 // resolve with page titles recieved from the service
                 promise = this.getPageTitles(values, fetchUrl);
             } else {

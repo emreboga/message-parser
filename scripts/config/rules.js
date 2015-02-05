@@ -20,7 +20,7 @@ var allRules = {
             'type': 'link',
             'name': 'links',
             'regex': {
-                'pattern': /(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/ig,
+                'pattern': /((http|https)\:\/\/)?(www.)?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/ig,
                 'matchGroup': 0
             },
             'fetchUrl': 'http://title-service.azurewebsites.net/links'

@@ -5,17 +5,27 @@
     <link rel="stylesheet" type="text/css" href="styles/messageparser.css">
 </head>
 <body>
+<div class="nav">
+    <ul>
+        <li id="nav-manual-test"><span>Manual Test</span></li>
+        <li id="nav-unit-test"><span>Unit Test</span></li>
+    </ul>
+</div>
 <div class='main'>
-    <div class='test-input'>
-        <label>Enter a message to parse:</label>
-        <div>
-            <textarea id='input' rows="20"></textarea>
+    <div id="manual" class='manual-test'>
+        <div class='test-input'>
+            <label>Enter a message to parse:</label>
+            <div>
+                <textarea id='input' rows="20"></textarea>
+            </div>
+            <button id='button' type='button'>Parse</button>
         </div>
-        <button id='button' type='button'>Parse</button>
+        <div class='test-result'>
+            <label>Results:</label>
+            <pre id='output'></pre>
+        </div>
     </div>
-    <div class='test-result'>
-        <label>Results:</label>
-        <pre id='output'></pre>
+    <div id="unit" class="unit-test">
     </div>
 </div>
 <script type="text/javascript" src="scripts/utils.js"></script>
@@ -28,8 +38,33 @@
     var elmButton = document.getElementById('button');
     var elmTextArea = document.getElementById('input');
     var elmOutput = document.getElementById('output');
+    var elmNavManTest = document.getElementById('nav-manual-test');
+    var elmNavUnitTest = document.getElementById('nav-unit-test');
+    var elmManual = document.getElementById('manual');
+    var elmUnit = document.getElementById('unit');
+
     var mp = new MessageParser(RuleGenerator.generate(allRules));
-    elmButton.addEventListener('click', function() {
+
+    elmButton.addEventListener('click', setupManualTesting);
+    elmNavManTest.addEventListener('click', manuelTestSelected);
+    elmNavUnitTest.addEventListener('click', unitTestSelected);
+
+    function manuelTestSelected() {
+        elmNavManTest.style.backgroundColor = '#A4A4A4';
+        elmNavUnitTest.style.backgroundColor = '#f7f7f7';
+        elmUnit.style.display = 'none';
+        elmManual.style.display = 'block';
+        elmButton.addEventListener('click', setupManualTesting);
+    }
+
+    function unitTestSelected() {
+        elmNavManTest.style.backgroundColor = '#f7f7f7';
+        elmNavUnitTest.style.backgroundColor = '#A4A4A4';
+        elmManual.style.display = 'none';
+        elmUnit.style.display = 'block';
+    }
+
+    function setupManualTesting() {
         elmButton.innerHTML = 'Please wait...';
         elmButton.setAttribute('disabled', 'disabled');
         mp.parse(elmTextArea.value).then(function(results) {
@@ -44,7 +79,9 @@
             elmButton.removeAttribute('disabled');
             elmButton.innerHTML = 'Parse';
         });
-    });
+    }
+
+
 </script>
 </body>
 </html>
