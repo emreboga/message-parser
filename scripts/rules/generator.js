@@ -1,5 +1,5 @@
 // A Rule generator for a given set of Rule configurations
-var RuleGenerator = (function(utils, Rule, LinkRule) {
+var RuleGenerator = (function(utils, RuleBase, RuleLink) {
 
     var ruleGen = {};
 
@@ -19,12 +19,12 @@ var RuleGenerator = (function(utils, Rule, LinkRule) {
             switch (rule.type) {
                 case 'link':
                     options.fetchUrl = rule.fetchUrl;
-                    rules.push(new LinkRule(options));
+                    rules.push(new RuleLink(options));
                     break;
                 case 'mention':
                 case 'emoticon':
                     // no specific options
-                    rules.push(new Rule(options));
+                    rules.push(new RuleBase(options));
                     break;
                 default:
                     break;
@@ -36,4 +36,4 @@ var RuleGenerator = (function(utils, Rule, LinkRule) {
     };
 
     return ruleGen;
-}(Utility, Rule, LinkRule));
+}(Utility, RuleBase, RuleLink));

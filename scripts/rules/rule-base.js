@@ -1,4 +1,4 @@
-var Rule = (function(utils) {
+var RuleBase = (function(utils) {
 
     // constructor
     // options: object that contains the functional options for the Rule

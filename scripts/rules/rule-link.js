@@ -1,5 +1,5 @@
-var LinkRule = (function(Rule, utils) {
-    var linkRule = Rule.extend({
+var RuleLink = (function(RuleBase, utils) {
+    var RuleLink = RuleBase.extend({
 
         // function to be executed after regex parsing of the message
         // results: array returned as the results of regex parsing
@@ -54,5 +54,5 @@ var LinkRule = (function(Rule, utils) {
         }
     });
 
-    return linkRule;
-}(Rule, Utility));
+    return RuleLink;
+}(RuleBase, Utility));

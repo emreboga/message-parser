@@ -30,12 +30,19 @@
     var elmOutput = document.getElementById('output');
     var mp = new MessageParser(RuleGenerator.generate(allRules));
     elmButton.addEventListener('click', function() {
+        elmButton.innerHTML = 'Please wait...';
+        elmButton.setAttribute('disabled', 'disabled');
         mp.parse(elmTextArea.value).then(function(results) {
+            elmButton.removeAttribute('disabled');
+            elmButton.innerHTML = 'Parse';
             if (!results.error) {
                 elmOutput.innerHTML = JSON.stringify(results, null, 2);
             } else {
                 elmOutput.innerHTML = results.error.message;
             }
+        }, function() {
+            elmButton.removeAttribute('disabled');
+            elmButton.innerHTML = 'Parse';
         });
     });
 </script>
