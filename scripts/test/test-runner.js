@@ -23,8 +23,14 @@ var testRunner = (function(utils) {
 
     function makeTestCaseCallback(testCase) {
         return function(results) {
-            var success = JSON.stringify(results) === JSON.stringify(testCase.expected) ? 'PASSED' : 'FAILED';
-            testrunner.reportHtml += '<p>' + 'Testing ' + testCase.name + '...' + success + '</p>';
+            var actual = JSON.stringify(results);
+            var expected = JSON.stringify(testCase.expected);
+            var success = actual === expected ? '<span class="passed">PASSED</span>' : '<span class="failed">FAILED</span>';
+            testrunner.reportHtml += '<p><span class="test-header"><b>' + 'Running test case "' + testCase.name + '" :</b></span><br>';
+            testrunner.reportHtml += '<span class="test-topic">Input: </span>' + testCase.input + '<br>';
+            testrunner.reportHtml += '<span class="test-topic">Expected: </span>' + expected + '<br>';
+            testrunner.reportHtml += '<span class="test-topic">Actual: </span>' + actual + '<br>';
+            testrunner.reportHtml += '<span class="test-topic">Result: </span>' + success + '</p>';
         };
     }
 
