@@ -54,13 +54,15 @@ Options (object): Specifies all the options for a rule. A sample rule options lo
     'pattern': /\B@([a-z0-9]+)/ig,
     'matchGroup': 1
   }
+  'fetchUrl': ''
 }
 ```
-**type:** Specifies the type of the rule. This is necessary to automate the rule generation from a options JSON object.  
-**name:** Identifier of this specific rule object. Name can be different for each rule object, although they implement the same parsing rule.  
-**regex:** Specifies the regular expression details for the rule. Regular expression is the main identifier of how a rule behaves.  
-*pattern:* The pattern of the regular expression.  
-*matchGroup:* Index of the regular expression group to be used in a matched pattern.
+**type (required):** Specifies the type of the rule. This is necessary to automate the rule generation from a options JSON object.  
+**name (required):** Identifier of this specific rule object. Name can be different for each rule object, although they implement the same parsing rule.  
+**regex (required):** Specifies the regular expression details for the rule. Regular expression is the main identifier of how a rule behaves.  
+*pattern (required):* The pattern of the regular expression.  
+*matchGroup (required):* Index of the regular expression group to be used in a matched pattern.
+**fetchUrl (optional):** Url for an API end-point to be called with the results of a rule during the post-processing. Please see Link Rule details below for a sample usage.
 
 #### Methods
 ```javascript
@@ -68,6 +70,14 @@ apply(message)
 ```
 Applies the rule to the message specified.
 message (string): Message that the rule will be applied on.
+returns: A Promise object that resolves with the result of the rule application.
 
+```javascript
+postProcess(results)
+```
+Executed after all apply calls with the results.
+results (array): Array of results from the rule application.
+returns: A Promise object that resolves with the results after post-processing the passed-in results.
 
-
+### Link Rule
+Link rule is a specialized rule that inherits all the base functionality from Base Rule. Link Rule overrides the postProcess function to add the title retrieval mechanism for each link. For that purpose Link Rule calls the API end-point url specified by the fetchUrl property in rule options (see above for options object definition). For the Link Rule there is an API end-point (http://title-service.azurewebsites.net/links) to get the titles for the pages these links are pointing to. For more details please see the repo of the title retrieval service (https://github.com/winbythenose/title-retrieval-service).  
