@@ -18,14 +18,16 @@
             <div>
                 <textarea id='input' rows="20"></textarea>
             </div>
-            <button id='button' type='button'>Parse</button>
+            <button id='button-manual' type='button'>Parse</button>
         </div>
-        <div class='test-result'>
+        <div class='manual-results'>
             <label>Results:</label>
             <pre id='output'></pre>
         </div>
     </div>
     <div id="unit" class="unit-test">
+         <button id='button-unit' type='button'>Run all tests</button>
+         <div id="unit-results"></div>
     </div>
 </div>
 <script type="text/javascript" src="scripts/utils.js"></script>
@@ -34,54 +36,8 @@
 <script type="text/javascript" src="scripts/rules/rule-link.js"></script>
 <script type="text/javascript" src="scripts/rules/generator.js"></script>
 <script type="text/javascript" src="scripts/messageparser.js"></script>
-<script type="text/javascript">
-    var elmButton = document.getElementById('button');
-    var elmTextArea = document.getElementById('input');
-    var elmOutput = document.getElementById('output');
-    var elmNavManTest = document.getElementById('nav-manual-test');
-    var elmNavUnitTest = document.getElementById('nav-unit-test');
-    var elmManual = document.getElementById('manual');
-    var elmUnit = document.getElementById('unit');
-
-    var mp = new MessageParser(RuleGenerator.generate(allRules));
-
-    elmButton.addEventListener('click', setupManualTesting);
-    elmNavManTest.addEventListener('click', manuelTestSelected);
-    elmNavUnitTest.addEventListener('click', unitTestSelected);
-
-    function manuelTestSelected() {
-        elmNavManTest.style.backgroundColor = '#A4A4A4';
-        elmNavUnitTest.style.backgroundColor = '#f7f7f7';
-        elmUnit.style.display = 'none';
-        elmManual.style.display = 'block';
-        elmButton.addEventListener('click', setupManualTesting);
-    }
-
-    function unitTestSelected() {
-        elmNavManTest.style.backgroundColor = '#f7f7f7';
-        elmNavUnitTest.style.backgroundColor = '#A4A4A4';
-        elmManual.style.display = 'none';
-        elmUnit.style.display = 'block';
-    }
-
-    function setupManualTesting() {
-        elmButton.innerHTML = 'Please wait...';
-        elmButton.setAttribute('disabled', 'disabled');
-        mp.parse(elmTextArea.value).then(function(results) {
-            elmButton.removeAttribute('disabled');
-            elmButton.innerHTML = 'Parse';
-            if (!results.error) {
-                elmOutput.innerHTML = JSON.stringify(results, null, 2);
-            } else {
-                elmOutput.innerHTML = results.error.message;
-            }
-        }, function() {
-            elmButton.removeAttribute('disabled');
-            elmButton.innerHTML = 'Parse';
-        });
-    }
-
-
-</script>
+<script type="text/javascript" src="scripts/test/unit-tests.js"></script>
+<script type="text/javascript" src="scripts/test/test-runner.js"></script>
+<script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>
