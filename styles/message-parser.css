@@ -17,28 +17,23 @@ body {
     margin-right: 30px;
     float: left;
 }
-
 .nav ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
-
 .nav ul li {
     height: 40px;
     margin: 4px;
     text-align: center;
     border: 1px solid ;
 }
-
 .nav ul li:hover {
     cursor: pointer;
 }
-
 .nav ul li span {
     line-height: 40px;
 }
-
 #nav-manual-test {
     background-color: #A4A4A4;
 }
@@ -52,15 +47,12 @@ body {
 .main .manual-test {
     margin-top: 10px;
 }
-
 .main .manual-test label {
     font-weight: bold;
 }
-
 .main .manual-test .test-input {
     width: 100%;
 }
-
 .main .manual-test .test-input textarea {
     width: 100%;
     margin-top: 5px;
@@ -71,7 +63,6 @@ body {
     -moz-box-shadow: none;
     box-shadow: none;
 }
-
 .main .manual-test .test-input button {
     width: 100%;
     height: 30px;
@@ -82,26 +73,20 @@ body {
     display: none;
     margin-top: 10px;
 }
-
 .main .unit-test button {
     width: 100%;
     height: 30px;
     margin-bottom: 5px;
 }
-
 .main .unit-test .test-header {
     font-size: 16px;
 }
-
 .main .unit-test .test-topic {
     font-weight: bold;
 }
-
 .main .unit-test .passed {
     color: green;
 }
-
 .main .unit-test .failed {
     color: red;
 }
-

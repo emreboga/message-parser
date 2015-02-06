@@ -1,3 +1,4 @@
+// Link Rule implementation which extends the Base Rule
 var RuleLink = (function(RuleBase, utils) {
     var RuleLink = RuleBase.extend({
 

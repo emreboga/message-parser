@@ -1,3 +1,4 @@
+// Base Rule implementation
 var RuleBase = (function(utils) {
 
     // constructor

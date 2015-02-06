@@ -1,3 +1,4 @@
+// definitions for all unit tests to be executed
 var unitTests = {
     'cases' : [
         {

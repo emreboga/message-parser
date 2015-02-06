@@ -1,3 +1,4 @@
+// Definitions for all available rules
 var allRules = {
     'rules' : [
         {
