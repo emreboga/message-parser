@@ -1,10 +1,11 @@
+// Definitions for all available rules
 var allRules = {
     'rules' : [
         {
             'type': 'mention',
             'name': 'mentions',
             'regex': {
-                'pattern': /@(\w+)/ig,
+                'pattern': /\B@([a-z0-9]+)/ig,
                 'matchGroup': 1
             }
         },
@@ -20,7 +21,7 @@ var allRules = {
             'type': 'link',
             'name': 'links',
             'regex': {
-                'pattern': /(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/ig,
+                'pattern': /((\bhttp|\bhttps)\:\/\/)[a-z0-9\-\.]+\.[a-z]{2,3}(\/\S*)?/ig,
                 'matchGroup': 0
             },
             'fetchUrl': 'http://title-service.azurewebsites.net/links'

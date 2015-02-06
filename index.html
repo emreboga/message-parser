@@ -2,42 +2,42 @@
 <html>
 <head>
     <title>Message Parser Test Page</title>
-    <link rel="stylesheet" type="text/css" href="styles/messageparser.css">
+    <link rel="stylesheet" type="text/css" href="styles/message-parser.css">
 </head>
 <body>
+<div class="nav">
+    <ul>
+        <li id="nav-manual-test"><span>Manual Test</span></li>
+        <li id="nav-unit-test"><span>Unit Test</span></li>
+    </ul>
+</div>
 <div class='main'>
-    <div class='test-input'>
-        <label>Enter a message to parse:</label>
-        <div>
-            <textarea id='input' rows="20"></textarea>
+    <div id="manual" class='manual-test'>
+        <div class='test-input'>
+            <label>Enter a message to parse:</label>
+            <div>
+                <textarea id='input' rows="20"></textarea>
+            </div>
+            <button id='button-manual' type='button'>Parse</button>
         </div>
-        <button id='button' type='button'>Parse</button>
+        <div class='manual-results'>
+            <label>Results:</label>
+            <pre id='output'></pre>
+        </div>
     </div>
-    <div class='test-result'>
-        <label>Results:</label>
-        <pre id='output'></pre>
+    <div id="unit" class="unit-test">
+         <button id='button-unit' type='button'>Run all tests</button>
+         <div id="unit-results"></div>
     </div>
 </div>
 <script type="text/javascript" src="scripts/utils.js"></script>
-<script type="text/javascript" src="scripts/config/rules.js"></script>
+<script type="text/javascript" src="scripts/rules/all-rules.js"></script>
 <script type="text/javascript" src="scripts/rules/rule-base.js"></script>
 <script type="text/javascript" src="scripts/rules/rule-link.js"></script>
-<script type="text/javascript" src="scripts/rules/generator.js"></script>
-<script type="text/javascript" src="scripts/messageparser.js"></script>
-<script type="text/javascript">
-    var elmButton = document.getElementById('button');
-    var elmTextArea = document.getElementById('input');
-    var elmOutput = document.getElementById('output');
-    var mp = new MessageParser(RuleGenerator.generate(allRules));
-    elmButton.addEventListener('click', function() {
-        mp.parse(elmTextArea.value).then(function(results) {
-            if (!results.error) {
-                elmOutput.innerHTML = JSON.stringify(results, null, 2);
-            } else {
-                elmOutput.innerHTML = results.error.message;
-            }
-        });
-    });
-</script>
+<script type="text/javascript" src="scripts/rules/rule-generator.js"></script>
+<script type="text/javascript" src="scripts/message-parser.js"></script>
+<script type="text/javascript" src="scripts/test/unit-tests.js"></script>
+<script type="text/javascript" src="scripts/test/test-runner.js"></script>
+<script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>

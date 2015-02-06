@@ -1,4 +1,5 @@
-var Rule = (function(utils) {
+// Base Rule implementation
+var RuleBase = (function(utils) {
 
     // constructor
     // options: object that contains the functional options for the Rule
@@ -34,26 +35,16 @@ var Rule = (function(utils) {
             resultsObj[that.name] = results;
         }
 
-        // create a promise to be returned to the caller
+        // create a promise to be returned back to the caller
         var promise = (new Promise(function(resolve) {
             if (!utils.isEmptyArray(resultsObj[that.name])) {
-                // If there is a postProcess defined for this Rule (by any extending Rule)
-                // the postProcess will be hooked to this promise as well
-                if (typeof that.postProcess === 'function') {
-                    that.postProcess(resultsObj).then(function(linkResults) {
-                        if (!utils.isUndefinedOrNull(linkResults)) {
-                            resolve(linkResults);
-                        } else {
-                            resolve(utils.logError(that, 'Empty linkResults'));
-                        }
-                    }, function(error) {
-                        // pass the error from the postProcess to this promise's resolve
-                        resolve(utils.logError(error.context, error.message));
-                    });
-                } else {
-                    // if no postProcess defined, immediately resolve the results
-                    resolve(resultsObj);
-                }
+                // hook-up the postProcess to the returned promise
+                that.postProcess(resultsObj).then(function(results) {
+                    resolve(results);
+                }, function(error) {
+                    // pass the error from the postProcess to this promise's resolve
+                    resolve(utils.logError(error.context, error.message));
+                });
             } else {
                 // in case of no results, resolve with nothing
                 resolve();
@@ -61,6 +52,15 @@ var Rule = (function(utils) {
         }));
 
         return promise;
+    };
+
+    // function to be executed after regex parsing of the message
+    // results: array returned as the results of regex parsing
+    // returns a promise to be resolved when post processing completed
+    rule.prototype.postProcess = function(results) {
+        // this function is intended to be overridden by extending types
+        // base implemetation immediately returns a promise resolving the results
+        return Promise.resolve(results);
     };
 
     // name of the rule
