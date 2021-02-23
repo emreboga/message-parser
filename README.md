@@ -1,5 +1,5 @@
 # Message Parser
-Message Parser is specifically built for a HipChar coding challenge.
+Message Parser is specifically built for a HipChat coding challenge.
 
 ## Library
 This section gives details about each type in the Message Parser library.
